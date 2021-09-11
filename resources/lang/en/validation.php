@@ -137,9 +137,32 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'name' => [
+            'required' => 'El nombre es requerido para continuar',
+            'regex' => 'El nombre no puede contener números ni otro signo especial a excepción de guion bajo y guion medio'
         ],
+        'paternal_surname' => [
+            'required' => 'El apellido paterno es requerido para continuar',
+            'regex' => 'El apellido paterno no puede contener números ni otro signo especial a excepción de guion bajo y guion medio'
+        ],
+        'maternal_surname' => [
+            'required' => 'El apellido paterno es requerido para continuar',
+            'regex' => 'El apellido paterno no puede contener números ni otro signo especial a excepción de guion bajo y guion medio'
+        ],
+        'email' => [
+            'required' => 'El email es requerido para continuar'
+        ],
+        'type_of_contract' => [
+            'required' => 'El tipo de contrado es requerdio para continuar.'
+        ],
+        'code' => [
+            'required' => 'El código es requerido para continuar',
+            'max' => 'El código debe contener 10 letras o números',
+            'min' => 'El código debe contener 10 letras o números'
+        ],
+        'status' => [
+            'required' => 'El status es requerido para continuar'
+        ]
     ],
 
     /*

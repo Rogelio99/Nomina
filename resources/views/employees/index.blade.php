@@ -7,7 +7,7 @@
             <h2>Gestión de empleados</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-success" >Registrar empleado nuevo</a>
+            <a class="btn btn-success" href="{{ route('Employeer.form') }}">Registrar empleado nuevo</a>
         </div>
     </div>
 </div>
@@ -42,13 +42,13 @@
         <td>{{ $employee->type_of_contract["name"] }}</td>
         <td>{{ $employee->status == 1 ? 'Activo': 'Inactivo'}}</td>
         <td>
-            <form action="{{route('Employeer.delete', ['id' =>$employee->id])}}" method="POST">
+            <form  method="POST">
 
-                <a class="btn btn-info" >Ver detalle</a>
+                <a class="btn btn-info" href="{{ route('Employeer.detail', ['id' =>$employee->id]) }}">Ver detalle</a>
 
-                <a class="btn btn-primary" >Editar</a>
+                <a class="btn btn-primary" href="{{route('Employeer.form',  ['id' =>$employee->id])}}">Editar</a>
 
-                <a class="btn btn-danger">Desactivar</a>
+
 
                 @method('DELETE')
 

@@ -15,4 +15,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 
 Route::get('/', [EmployeeController::class, 'index'])->name('index');
-
+Route::match(['get', 'post'], 'form', [EmployeeController::class, 'form'])->name('Employeer.form');
+Route::post('save/{id}', [EmployeeController::class, 'save'])->name('Employeer.save');
+Route::get('detail', [EmployeeController::class, 'show'])->name('Employeer.detail');
