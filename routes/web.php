@@ -17,5 +17,6 @@ use App\Http\Controllers\EmployeeController;
 Route::get('/', [EmployeeController::class, 'index'])->name('index');
 Route::match(['get', 'post'], 'form', [EmployeeController::class, 'form'])->name('Employeer.form');
 Route::get('change_status', [EmployeeController::class, 'change_status'])->name('Employeer.change_status');
+Route::delete('delete', [EmployeeController::class, 'delete'])->name('Employeer.delete');
 Route::post('save/{id}', [EmployeeController::class, 'save'])->name('Employeer.save');
 Route::get('detail', [EmployeeController::class, 'show'])->name('Employeer.detail');

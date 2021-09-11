@@ -134,7 +134,24 @@ class EmployeeController extends Controller
         }
     }
 
-    
+    /**
+     * Eliminado logico de empleado
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        $id = $request->input('id');
+        $employee = Employee::find($id);
+        $employee->is_active = false;
+        $employee->save();
+
+        $response = 'Empleado ' . $employee->name . ' fue eliminado con exito.';
+
+        return redirect()->route('index')
+            ->with('success', $response);
+    }
 
     /**
      * Activar o desactivar al empleado

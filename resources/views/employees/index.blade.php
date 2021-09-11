@@ -42,7 +42,7 @@
         <td>{{ $employee->type_of_contract["name"] }}</td>
         <td>{{ $employee->status == 1 ? 'Activo': 'Inactivo'}}</td>
         <td>
-            <form  method="POST">
+            <form action="{{route('Employeer.delete', ['id' =>$employee->id])}}" method="POST">
 
                 <a class="btn btn-info" href="{{ route('Employeer.detail', ['id' =>$employee->id]) }}">Ver detalle</a>
 
