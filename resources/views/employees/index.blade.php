@@ -48,6 +48,7 @@
 
                 <a class="btn btn-primary" href="{{route('Employeer.form',  ['id' =>$employee->id])}}">Editar</a>
 
+                <a class="{{ $employee->status == 1 ? 'btn btn-danger': 'btn btn-success' }}" href="{{ route('Employeer.change_status',['id'=>$employee->id]) }}">{{$employee->status == 1 ? 'Desactivar': 'Activar'}}</a>
 
 
                 @method('DELETE')
