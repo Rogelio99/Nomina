@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "60d192cd-110b-4a07-b5fe-a70542b8c6c7",
+		"name": "Nomina",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TypeOfContract",
+			"item": [
+				{
+					"name": "FindTypeOfContracts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server_path}}/type_of_contract/",
+							"host": [
+								"{{server_path}}"
+							],
+							"path": [
+								"type_of_contract",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "Paginate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server_path}}/employee/?limit=5&page=1",
+							"host": [
+								"{{server_path}}"
+							],
+							"path": [
+								"employee",
+								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server_path}}/employee/?id=1",
+							"host": [
+								"{{server_path}}"
+							],
+							"path": [
+								"employee",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change_status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{server_path}}/employee/change_status?id=1",
+							"host": [
+								"{{server_path}}"
+							],
+							"path": [
+								"employee",
+								"change_status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "XSRF-TOKEN=eyJpdiI6Ims2WS9OaGw2QzhxU3NmZUhKUVR5SXc9PSIsInZhbHVlIjoiQTEzNExkMnVMaHdzMUxabURWZU05djM5c2FaUGJtdTBObmltaW5PUTJMSWJvaFdZRHVvUVpMQUpBbVZvOUJVR2pwV0p1NUNvcExFRDZSOUszakliSjJ4bFdIa3ZESGo3TjlaT25PSTJyMmJxajlrdFZmcHdKUHNyM09XRkViVVkiLCJtYWMiOiJhNGQxYjNmOGI3ODNiODE5Njk1MmRlYWM1OGQ5NzIxNjA4N2RiZDUzODFkZGFmYmQ0YTZhZmI5NGI1MDhkYjg5IiwidGFnIjoiIn0%3D; laravel_session=eyJpdiI6InBBblVqMWk4MjZ5YlhjeU5vaEJYVlE9PSIsInZhbHVlIjoiVzNzUzVkNWVpL3lTanMwSTg3MUJ2alIxOSsxYXdLb0xHOU82REhLVW04NnVZSGZGcG9aQUlkL1czQ3JYbGREUHRkV2NVaWxIN2xncGZSb2d2L2w2K29XT0x1Zmt4WXRQRW1XbHBwWUZWaWFWZUN1SFNPdS9Kd0FEWXB5eCtsaTIiLCJtYWMiOiI3YmQ2NWQ1NGI4ZjlmNDk5ZjdiNjQzY2M4MjI2YTY3YWUxZDVhNTZiYWRiNzRjNDAwNDE4MmZjOTY2MTc1MTAzIiwidGFnIjoiIn0%3D",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{server_path}}/employee/delete?id=10",
+							"host": [
+								"{{server_path}}"
+							],
+							"path": [
+								"employee",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employee\": {\r\n        \"id\": 60,\r\n        \"code\": \"1a2b3c4d5e\",\r\n        \"name\": \"Nelli\",\r\n        \"paternal_surname\": \"Suarez\",\r\n        \"maternal_surname\": \"Perez\",\r\n        \"type_of_contract\": 2,\r\n        \"email\": \"nelli@gmail.com\",\r\n        \"status\": true\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_path}}/employee/save",
+							"host": [
+								"{{server_path}}"
+							],
+							"path": [
+								"employee",
+								"save"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employee\": {\r\n        \"code\": \"1a2b3c4d5444e\",\r\n        \"name\": \"Nelli\",\r\n        \"paternal_surname\": \"Suarez\",\r\n        \"maternal_surname\": \"Martinez\",\r\n        \"type_of_contract\": 2,\r\n        \"email\": \"nelli@gmail.com\",\r\n        \"status\": true\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_path}}/employee/save",
+							"host": [
+								"{{server_path}}"
+							],
+							"path": [
+								"employee",
+								"save"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
