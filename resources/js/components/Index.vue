@@ -20,7 +20,7 @@
             <p>{{ message }}</p>
         </div>
 
-        <!-- Modal -->
+        <!-- Form -->
         <div class="modal fade" :class="{ show: modal }">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -206,6 +206,9 @@
                 </div>
             </div>
         </div>
+        <!-- End of form -->
+
+        <!-- Table with info -->
         <table class="table table-striped table-hover">
             <thead class="thead-dark">
                 <tr>
@@ -269,6 +272,7 @@
                 </tr>
             </tbody>
         </table>
+        <!-- End of table with info -->
         <button
             v-if="page != 1"
             @click="pagination(page - 1)"
@@ -313,6 +317,7 @@ export default {
         };
     },
     methods: {
+        //Consumo de api laravel
         async findTypeOfContracts() {
             const res = await axios
                 .get("type_of_contract/")
@@ -375,6 +380,8 @@ export default {
                     });
             }
         },
+
+        //Metodos para el funcionamiento de la vista.
         changeModal(id = 0, disabled = 0) {
             if (id != 0) {
                 this.titleModal = "Actualizar empleado";
@@ -400,6 +407,7 @@ export default {
         }
     },
     created() {
+        //Consumo cuando se monta la página
         this.pagination(this.page);
         this.findTypeOfContracts();
     }

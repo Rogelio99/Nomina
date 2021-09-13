@@ -93,7 +93,20 @@ class EmployeeController extends Controller
     /**
      * Eliminado logico de empleado
      *
-     * @param  \Illuminate\Http\Request  $request ejemplo: /employee/delete?id=1
+     * @param  \Illuminate\Http\Request  $request ejemplo: 
+     * 
+     * {
+     *  "employee": {
+     *     "id": 60,  if will be created this field dont be send
+     *     "code": "1a2b3c4d5e",
+     *     "name": "Nelli",
+     *     "paternal_surname": "Suarez",
+     *     "maternal_surname": "Perez",
+     *     "type_of_contract": 2,
+     *     "email": "nelli@gmail.com",
+     *     "status": true
+     *   }
+     * }
      * @return \Illuminate\Http\Response
      */
 
