@@ -2,174 +2,115 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use App\Models\type_of_contract;
-use Error;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Http\Response\SuccessResponse;
+use App\Http\Response\ErrorResponse;
+use App\Http\Bc\EmployeeBc;
+use \Exception;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Enlista los productos.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private $employee_bc = null;
+
+    public function __construct()
     {
-        $employees = Employee::where('is_active', '=', 1)->with(['type_of_contract'])->orderBy('paternal_surname', 'DESC')->paginate(5);
-        return view('employees.index', compact('employees'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        
+        $this->employee_bc = new EmployeeBc();
     }
-
     /**
-     * Visualiza el detalle del empleado.
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Enlista los empleados.
+     * @param  \Illuminate\Http\Request  $request ejemplo: {"limit":1, "page":2} o {"id":1}
+     * @return App\Http\Response\Response
      */
-    public function show(Request $request)
-    {
-        $id = $request->input('id');
-        $employee = Employee::with(['type_of_contract'])->find($id);
+    public function FindEmployees(Request $request){
+        try
+        {
+            $filters = [];
+            $filters["limit"] = $request->input('limit');
+            $filters["page"] = $request->input('page');
+            $filters["id"] = $request->input('id');
 
-
-        return view('employees.detail', compact('employee'));
-    }
-
-    /**
-     * Abre el formulario para la creación de actualización
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function form(Request $request)
-    {
-        $id = $request->input('id');
-        $types_of_contract = type_of_contract::where('is_active', '=', 1)->get();
-
-        if ($id)
-            $employee = Employee::with(['type_of_contract'])->find($id);
-        else {
-            $employee = new Employee();
-            $employee->id = 0;
+            $employees  = $this->employee_bc->FindEmployees($filters);
+            $response = new SuccessResponse();
+            $response->SetData($employees);
+            return $response->WriteResponse();
         }
-
-        return view('employees.form', compact('employee', 'types_of_contract'));
-    }
-
-    /**
-     * Método para guardar los datos del empleado.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function save(Request $request)
-    {
-        $request->validate([
-            'code' => ['required', 'max:10', 'min:10', 'regex: /^[a-z0-9]*$/'],
-            'paternal_surname' => ['required', 'regex: /^[a-zA-Z-_]*$/'],
-            'maternal_surname' => ['required', 'regex: /^[a-zA-Z-_]*$/'],
-            'name' => ['required', 'regex: /^[a-zA-Z-_]*$/'],
-            'type_of_contract' => ['required'],
-            'email' => 'required|regex:/(.+)@(.+)\.(.+)/i',
-            'status' => 'required'
-        ]);
-
-        $employee = new Employee();
-        $employee->code = $request['code'];
-        $employee->name = $request['name'];
-        $employee->paternal_surname = $request['paternal_surname'];
-        $employee->maternal_surname = $request['maternal_surname'];
-        $employee->type_of_contract_id = $request['type_of_contract'];
-        $employee->email = $request['email'];
-        $employee->status = $request['status'];
-
-        if ($request['id'] != 0) {
-            $employee->id = $request['id'];
-            $message = $this->update($employee);
-        } else {
-            $message = $this->create($employee);
-        }
-        return redirect()->route('index')
-            ->with('success', $message);
-    }
-
-    /**
-     * Método para actualizar los datos del empleado.
-     *
-     * @param  App\Models\Employee $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Employee $employee)
-    {
-        $employee_stored = Employee::find($employee->id);
-        if ($employee_stored) {
-            $employee->code = $employee['code'];
-            $employee_stored->name = $employee['name'];
-            $employee_stored->paternal_surname = $employee['paternal_surname'];
-            $employee_stored->maternal_surname = $employee['maternal_surname'];
-            $employee_stored->type_of_contract_id = $employee['type_of_contract_id'];
-            $employee_stored->email = $employee['email'];
-            $employee_stored->status = $employee['status'];
-            $employee_stored->save();
-            return 'Empleado actualizado';
-        } else {
-            return "El empleado no existe";
+        catch(Exception $e){
+            $response = new ErrorResponse();
+            $response->SetMessage($e->getMessage());
+            return $response->WriteResponse();
         }
     }
 
+
     /**
-     * Método para crear al  empleado.
+     * Activar o desactivar al empleado
      *
-     * @param  App\Models\Employee $employee
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request  $request ejemplo: /employee/change_status?id=1
+     * @return App\Http\Response\Response
      */
-    public function create(Employee $employee)
-    {
-        $employee_stored = Employee::where('email', '=', $employee->email)->orWhere('code', '=', $employee->code)->first();
-        if ($employee_stored)
-            return 'El codigo o email del empleado que intenta registrar ya esta registrado.';
-        else {
-            $employee->save();
-            return 'Empleado creado';
+    public function ChangeStatus(Request $request){
+        try
+        {
+            $id = $request->input('id');
+
+            $message  = $this->employee_bc->ChangeStatus($id);
+            $response = new SuccessResponse();
+            $response->SetData($message);
+            return $response->WriteResponse();
+        }
+        catch(Exception $e){
+            $response = new ErrorResponse();
+            $response->SetMessage($e->getMessage());
+            return $response->WriteResponse();
         }
     }
 
     /**
      * Eliminado logico de empleado
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request ejemplo: /employee/delete?id=1
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request)
-    {
-        $id = $request->input('id');
-        $employee = Employee::find($id);
-        $employee->is_active = false;
-        $employee->save();
 
-        $response = 'Empleado ' . $employee->name . ' fue eliminado con exito.';
+    public function Delete(Request $request){
+        try
+        {
+            $id = $request->input('id');
 
-        return redirect()->route('index')
-            ->with('success', $response);
+            $message  = $this->employee_bc->Delete($id);
+            $response = new SuccessResponse();
+            $response->SetData($message);
+            return $response->WriteResponse();
+        }
+        catch(Exception $e){
+            $response = new ErrorResponse();
+            $response->SetMessage($e->getMessage());
+            return $response->WriteResponse();
+        }
     }
 
     /**
-     * Activar o desactivar al empleado
+     * Eliminado logico de empleado
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request ejemplo: /employee/delete?id=1
      * @return \Illuminate\Http\Response
      */
-    public function change_status(Request $request)
-    {
-        $id = $request->input('id');
-        $employee = Employee::find($id);
-        $employee->status = !$employee->status;
-        $employee->save();
 
-        $new_status = $employee->status == 1 ? 'activado' : 'desactivado';
-        $response = 'Empleado ' . $employee->name . ' fue ' . $new_status . ' con exito';
-
-        return redirect()->route('index')
-            ->with('success', $response);
+    public function Save(Request $request){
+        try
+        {
+            $employee_to_save = $request->input('employee');
+            $message  = $this->employee_bc->Save($employee_to_save);
+            $response = new SuccessResponse();
+            $response->SetData($message);
+            return $response->WriteResponse();
+        }
+        catch(Exception $e){
+            $response = new ErrorResponse();
+            $response->SetMessage($e->getMessage());
+            return $response->WriteResponse();
+        }
     }
+   
 }

@@ -150,7 +150,8 @@ return [
             'regex' => 'El apellido paterno no puede contener números ni otro signo especial a excepción de guion bajo y guion medio'
         ],
         'email' => [
-            'required' => 'El email es requerido para continuar'
+            'required' => 'El email es requerido para continuar',
+            'regex' => 'El formato del email no es valido.'
         ],
         'type_of_contract' => [
             'required' => 'El tipo de contrado es requerdio para continuar.'

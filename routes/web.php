@@ -13,10 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\TypeOfContractController;
 
-Route::get('/', [EmployeeController::class, 'index'])->name('index');
-Route::match(['get', 'post'], 'form', [EmployeeController::class, 'form'])->name('Employeer.form');
-Route::get('change_status', [EmployeeController::class, 'change_status'])->name('Employeer.change_status');
-Route::delete('delete', [EmployeeController::class, 'delete'])->name('Employeer.delete');
-Route::post('save/{id}', [EmployeeController::class, 'save'])->name('Employeer.save');
-Route::get('detail', [EmployeeController::class, 'show'])->name('Employeer.detail');
+Route::prefix('employee')->group(function () {
+    Route::get('/', [EmployeeController::class, 'findEmployees'])->name('Employee.FindEmployees');
+    Route::put('/change_status', [EmployeeController::class, 'changeStatus'])->name('Employee.change_status');
+    Route::delete('/delete', [EmployeeController::class, 'delete'])->name('Employee.delete');
+    Route::post('/save', [EmployeeController::class, 'save'])->name('Employee.save');
+});
+
+Route::prefix('type_of_contract')->group(function () {
+    Route::get('/', [TypeOfContractController::class, 'findTypeOfContracts']);
+});
+
+Auth::routes();
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
